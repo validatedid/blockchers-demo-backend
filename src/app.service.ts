@@ -2,7 +2,7 @@ import {Injectable} from '@nestjs/common';
 import * as jwt from 'jsonwebtoken'
 import {ApiService} from './api.service';
 
-let diplomaStructure = require('./diploma-structure.json');
+import diplomaStructure from './diploma-structure.json';
 
 @Injectable()
 export class AppService {
