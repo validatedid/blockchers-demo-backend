@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  api:
+    build: .
+    container_name: api
+    volumes:
+      - ".env.dist:/api/.env"
+    ports:
+      - "9000:9000"
+    environment:
+      - NODE_ENV=prod
