@@ -1,27 +1,29 @@
-import {Body, Controller, Post, Request} from '@nestjs/common';
-import { AppService } from './app.service';
+import {Body, Controller, Headers, Post} from '@nestjs/common';
+
+import {AppService} from './app.service';
+import {DIDBody, ServiceEndpointBody} from './validation';
 
 @Controller('/universities')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Post('masters')
-  postMasters(@Body() body) {
+  postMasters(@Body() body: DIDBody) {
     return this.appService.createNewMaster(body);
   }
 
   @Post('bachelors')
-  postBachelors(@Body() body) {
+  postBachelors(@Body() body: DIDBody) {
     return this.appService.createNewBachelor(body);
   }
 
   @Post('bachelor-vp')
-  postBachelorVP(@Request() request) {
-    return this.appService.verifyBachelorVP(request);
+  postBachelorVP(@Headers() headers, @Body() serviceEnpointBody: ServiceEndpointBody) {
+    return this.appService.verifyBachelorVP(headers, serviceEnpointBody);
   }
 
   @Post('master-vp')
-  postMasterVP(@Request() request) {
-    return this.appService.verifyMasterVP(request);
+  postMasterVP(@Headers() headers, @Body() serviceEnpointBody: ServiceEndpointBody) {
+    return this.appService.verifyMasterVP(headers, serviceEnpointBody);
   }
 }

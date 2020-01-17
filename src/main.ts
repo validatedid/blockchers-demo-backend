@@ -1,13 +1,11 @@
 import * as dotenv from 'dotenv';
-import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import {NestFactory} from '@nestjs/core';
+import {SwaggerModule, DocumentBuilder} from '@nestjs/swagger';
+import {ValidationPipe} from '@nestjs/common';
 
 import { AppModule } from './app.module';
 
 dotenv.config();
-
-
-
 
 async function bootstrap() {
   const options = new DocumentBuilder()
@@ -18,6 +16,8 @@ async function bootstrap() {
       .build();
 
   const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new ValidationPipe());
+
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api-docs', app, document);
   await app.listen(process.env.APP_PORT || 3000);

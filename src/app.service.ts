@@ -1,6 +1,7 @@
 import {Injectable} from '@nestjs/common';
 import * as jwt from 'jsonwebtoken'
 import {ApiService} from './api.service';
+import {DIDBody, ServiceEndpointBody} from './validation';
 
 let diplomaStructure = require('./diploma-structure.json');
 
@@ -10,7 +11,7 @@ export class AppService {
 
   }
 
-  async createNewMaster(body: any) {
+  async createNewMaster(body: DIDBody) {
     diplomaStructure.credentialSubject.id = body.did;
     const token = await this.apiService.generateTokenForSpanishUniversity();
     const decodedToken = jwt.decode(token);
@@ -18,7 +19,7 @@ export class AppService {
     return this.apiService.diploma(diplomaStructure, token);
   }
 
-  async createNewBachelor(body: any) {
+  async createNewBachelor(body: DIDBody) {
     diplomaStructure.credentialSubject.id = body.did;
     const token = await this.apiService.generateTokenForFlemishGov();
     const decodedToken = jwt.decode(token);
@@ -26,18 +27,18 @@ export class AppService {
     return this.apiService.diploma(diplomaStructure, token);
   }
 
-  decodeUserToken(request: any) {
-    if (request.headers.authorization) {
-      const auth = request.headers.authorization.split('Bearer ');
+  decodeUserToken(headers: any) {
+    if (headers.authorization) {
+      const auth = headers.authorization.split('Bearer ');
       if (auth.length === 2) {
         return auth[1];
       }
     }
   }
 
-  async verifyMasterVP(request: any) {
-    const serviceEndpoint = request.body.serviceEndpoint;
-    const userToken = this.decodeUserToken(request);
+  async verifyMasterVP(headers: any, body: ServiceEndpointBody) {
+    const serviceEndpoint = body.serviceEndpoint;
+    const userToken = this.decodeUserToken(headers);
 
     const vp = await this.apiService.getVP(serviceEndpoint, userToken);
     let buff = Buffer.from(vp.data.base64, 'base64');
@@ -45,9 +46,9 @@ export class AppService {
     return await this.apiService.presentationValidation(JSON.parse(buff.toString()), userToken);
   }
 
-  async verifyBachelorVP(request: any) {
-    const serviceEndpoint = request.body.serviceEndpoint;
-    const userToken = this.decodeUserToken(request);
+  async verifyBachelorVP(headers: any, body: ServiceEndpointBody) {
+    const serviceEndpoint = body.serviceEndpoint;
+    const userToken = this.decodeUserToken(headers);
 
     const vp = await this.apiService.getVP(serviceEndpoint, userToken);
     let buff = Buffer.from(vp.data.base64, 'base64');
