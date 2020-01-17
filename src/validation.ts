@@ -10,7 +10,7 @@ export class DIDBody {
 }
 
 export class ServiceEndpointBody {
-    @IsUrl()
+    @IsUrl({ require_tld: false})
     @IsNotEmpty()
     @IsDefined()
     @ApiProperty()
