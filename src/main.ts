@@ -7,12 +7,13 @@ import { AppModule } from './app.module';
 
 dotenv.config();
 
+
 async function bootstrap() {
   const options = new DocumentBuilder()
+      .addBearerAuth()
       .setTitle('Universities')
       .setDescription('')
       .setVersion('1.0')
-      .addTag('universities')
       .build();
 
   const app = await NestFactory.create(AppModule);

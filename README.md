@@ -4,8 +4,20 @@ Development is still in progress.
 
 Latest status:  
 
-Swagger documentation for APIs can be found on : http://localhost:3222/universities/api-docs/ 
-after running `npm install` and `npm  run start:dev`
+To run this application in development mode:
+
+1. `cp .env.dist .env`
+2. `npm install`
+3. `npm run start:dev`
+
+
+To run this application into a production:
+
+1. `docker-compose build`
+2. `docker-compose up`
+
+Swagger documentation for APIs can be found on : http://localhost:9000/universities/api-docs/ 
+
 
 `/universities/bachelor-vp`  
  and   
