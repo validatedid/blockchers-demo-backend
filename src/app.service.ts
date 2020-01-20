@@ -3,7 +3,8 @@ import * as jwt from 'jsonwebtoken'
 import {ApiService} from './api.service';
 import {DIDBody, ServiceEndpointBody} from './validation';
 
-import diplomaStructure from './diploma-structure.json';
+import diplomaBachelorStructure from './bachelor-diploma-structure.json';
+import diplomaMasterStructure from './master-diploma-structure.json';
 
 @Injectable()
 export class AppService {
@@ -12,19 +13,19 @@ export class AppService {
   }
 
   async createNewMaster(body: DIDBody) {
-    diplomaStructure.credentialSubject.id = body.did;
+    diplomaMasterStructure.credentialSubject.id = body.did;
     const token = await this.apiService.generateTokenForSpanishUniversity();
     const decodedToken = jwt.decode(token);
-    diplomaStructure.issuer.id = decodedToken.did;
-    return this.apiService.diploma(diplomaStructure, token);
+    diplomaMasterStructure.issuer.id = decodedToken.did;
+    return this.apiService.diploma(diplomaMasterStructure, token);
   }
 
   async createNewBachelor(body: DIDBody) {
-    diplomaStructure.credentialSubject.id = body.did;
+    diplomaBachelorStructure.credentialSubject.id = body.did;
     const token = await this.apiService.generateTokenForFlemishGov();
     const decodedToken = jwt.decode(token);
-    diplomaStructure.issuer.id = decodedToken.did;
-    return this.apiService.diploma(diplomaStructure, token);
+    diplomaBachelorStructure.issuer.id = decodedToken.did;
+    return this.apiService.diploma(diplomaBachelorStructure, token);
   }
 
   decodeUserToken(headers: any) {
