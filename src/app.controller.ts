@@ -1,4 +1,4 @@
-import {Body, Controller, Headers, Post} from '@nestjs/common';
+import {Body, Controller, Headers, Post, Get, Response} from '@nestjs/common';
 
 import {AppService} from './app.service';
 import {DIDBody, ServiceEndpointBody} from './validation';
@@ -29,5 +29,10 @@ export class AppController {
   @Post('master-vp')
   postMasterVP(@Headers() headers, @Body() serviceEnpointBody: ServiceEndpointBody) {
     return this.appService.verifyMasterVP(headers, serviceEnpointBody);
+  }
+
+  @Get('/swagger.json')
+  async getSwagger(@Response() response) {
+    return response.redirect('/universities/api-docs-json');
   }
 }
