@@ -1,4 +1,4 @@
-import {Body, Controller, Headers, Post} from '@nestjs/common';
+import {Body, Controller, Headers, Post, Res} from '@nestjs/common';
 
 import {AppService} from './app.service';
 import {DIDBody, ServiceEndpointBody} from './validation';
@@ -21,13 +21,33 @@ export class AppController {
 
   @ApiBearerAuth()
   @Post('bachelor-vp')
-  postBachelorVP(@Headers() headers, @Body() serviceEnpointBody: ServiceEndpointBody) {
-    return this.appService.verifyBachelorVP(headers, serviceEnpointBody);
+  async postBachelorVP(@Headers() headers, @Body() serviceEnpointBody: ServiceEndpointBody, @Res() rs) {
+    try {
+      return await this.appService.verifyBachelorVP(headers, serviceEnpointBody);
+    } catch(ex) {
+      let status = 500;
+      let data = '';
+      if (ex.response && ex.response.status && ex.response.data) {
+        data = ex.response.data;
+        status = ex.response.status;
+      }
+      rs.status(status).send(data);
+    }
   }
 
   @ApiBearerAuth()
   @Post('master-vp')
-  postMasterVP(@Headers() headers, @Body() serviceEnpointBody: ServiceEndpointBody) {
-    return this.appService.verifyMasterVP(headers, serviceEnpointBody);
+  async postMasterVP(@Headers() headers, @Body() serviceEnpointBody: ServiceEndpointBody, @Res() rs) {
+    try {
+      return await this.appService.verifyMasterVP(headers, serviceEnpointBody);
+    } catch(ex) {
+      let status = 500;
+      let data = '';
+      if (ex.response && ex.response.status && ex.response.data) {
+        data = ex.response.data;
+        status = ex.response.status;
+      }
+      rs.status(status).send(data);
+    }
   }
 }
