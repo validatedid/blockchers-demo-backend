@@ -1,16 +1,14 @@
-import {Injectable} from '@nestjs/common';
-import * as jwt from 'jsonwebtoken'
-import {ApiService} from './api.service';
-import {DIDBody, ServiceEndpointBody} from './validation';
+import { Injectable } from "@nestjs/common";
+import * as jwt from "jsonwebtoken";
+import { ApiService } from "./api.service";
+import { DIDBody, ServiceEndpointBody } from "./validation";
 
-import diplomaBachelorStructure from './bachelor-diploma-structure.json';
-import diplomaMasterStructure from './master-diploma-structure.json';
+import diplomaBachelorStructure from "./bachelor-diploma-structure.json";
+import diplomaMasterStructure from "./master-diploma-structure.json";
 
 @Injectable()
 export class AppService {
-  constructor(private apiService: ApiService) {
-
-  }
+  constructor(private apiService: ApiService) {}
 
   async createNewMaster(body: DIDBody) {
     diplomaMasterStructure.credentialSubject.id = body.did;
@@ -30,7 +28,7 @@ export class AppService {
 
   decodeUserToken(headers: any) {
     if (headers.authorization) {
-      const auth = headers.authorization.split('Bearer ');
+      const auth = headers.authorization.split("Bearer ");
       if (auth.length === 2) {
         return auth[1];
       }
@@ -42,9 +40,12 @@ export class AppService {
     const userToken = this.decodeUserToken(headers);
 
     const vp = await this.apiService.getVP(serviceEndpoint, userToken);
-    let buff = Buffer.from(vp.data.base64, 'base64');
+    const buff = Buffer.from(vp.data.base64, "base64");
 
-    return await this.apiService.presentationValidation(JSON.parse(buff.toString()), userToken);
+    return await this.apiService.presentationValidation(
+      JSON.parse(buff.toString()),
+      userToken
+    );
   }
 
   async verifyBachelorVP(headers: any, body: ServiceEndpointBody) {
@@ -52,8 +53,11 @@ export class AppService {
     const userToken = this.decodeUserToken(headers);
 
     const vp = await this.apiService.getVP(serviceEndpoint, userToken);
-    let buff = Buffer.from(vp.data.base64, 'base64');
+    const buff = Buffer.from(vp.data.base64, "base64");
 
-    return await this.apiService.presentationValidation(JSON.parse(buff.toString()), userToken);
+    return await this.apiService.presentationValidation(
+      JSON.parse(buff.toString()),
+      userToken
+    );
   }
 }
