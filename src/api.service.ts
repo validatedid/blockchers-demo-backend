@@ -5,7 +5,7 @@ import config from "./config";
 
 @Injectable()
 export class ApiService {
-  async generateTokenForFlemishGov() {
+  async generateTokenForFlemishGov(): Promise<string> {
     const response = await axios.post(
       `${config.ebsiServicesApis.wallet}/wallet/token`,
       {
@@ -27,7 +27,7 @@ export class ApiService {
       });
   }
 
-  async generateTokenForSpanishUniversity() {
+  async generateTokenForSpanishUniversity(): Promise<string> {
     const response = await axios.post(
       `${config.ebsiServicesApis.wallet}/wallet/token`,
       {
@@ -49,7 +49,7 @@ export class ApiService {
       });
   }
 
-  getVP(serviceEndpoint: string, token: string) {
+  getVP(serviceEndpoint: string, token: string): Promise<any> {
     return axios
       .get(serviceEndpoint, {
         headers: {
@@ -61,7 +61,7 @@ export class ApiService {
       });
   }
 
-  presentationValidation(data, token) {
+  presentationValidation(data, token): Promise<any> {
     return axios
       .post(
         `${config.ebsiServicesApis.diplomaWallet}/diploma/presentation/validation`,
@@ -77,7 +77,7 @@ export class ApiService {
       });
   }
 
-  diploma(data, token) {
+  diploma(data, token): Promise<any> {
     return axios
       .post(`${config.ebsiServicesApis.diplomaWallet}/diploma`, data, {
         headers: {

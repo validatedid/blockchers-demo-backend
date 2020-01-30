@@ -10,7 +10,7 @@ import diplomaMasterStructure from "./master-diploma-structure.json";
 export class AppService {
   constructor(private apiService: ApiService) {}
 
-  async createNewMaster(body: DIDBody) {
+  async createNewMaster(body: DIDBody): Promise<object> {
     diplomaMasterStructure.credentialSubject.id = body.did;
     const token = await this.apiService.generateTokenForSpanishUniversity();
     const decodedToken = jwt.decode(token);
@@ -18,7 +18,7 @@ export class AppService {
     return this.apiService.diploma(diplomaMasterStructure, token);
   }
 
-  async createNewBachelor(body: DIDBody) {
+  async createNewBachelor(body: DIDBody): Promise<object> {
     diplomaBachelorStructure.credentialSubject.id = body.did;
     const token = await this.apiService.generateTokenForFlemishGov();
     const decodedToken = jwt.decode(token);
@@ -26,16 +26,18 @@ export class AppService {
     return this.apiService.diploma(diplomaBachelorStructure, token);
   }
 
-  decodeUserToken(headers: any) {
+  decodeUserToken(headers: any): string {
     if (headers.authorization) {
       const auth = headers.authorization.split("Bearer ");
       if (auth.length === 2) {
         return auth[1];
       }
     }
+
+    return "";
   }
 
-  async verifyMasterVP(headers: any, body: ServiceEndpointBody) {
+  async verifyMasterVP(headers: any, body: ServiceEndpointBody): Promise<void> {
     const serviceEndpoint = body.serviceEndpoint;
     const userToken = this.decodeUserToken(headers);
 
@@ -48,7 +50,10 @@ export class AppService {
     );
   }
 
-  async verifyBachelorVP(headers: any, body: ServiceEndpointBody) {
+  async verifyBachelorVP(
+    headers: any,
+    body: ServiceEndpointBody
+  ): Promise<void> {
     const serviceEndpoint = body.serviceEndpoint;
     const userToken = this.decodeUserToken(headers);
 

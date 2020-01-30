@@ -1,4 +1,3 @@
-/* tslint:disable max-classes-per-file */
 import { IsDefined, IsNotEmpty, IsString, IsUrl } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -11,6 +10,7 @@ export class DIDBody {
 }
 
 export class ServiceEndpointBody {
+  // eslint-disable-next-line @typescript-eslint/camelcase
   @IsUrl({ require_tld: false })
   @IsNotEmpty()
   @IsDefined()

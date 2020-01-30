@@ -7,7 +7,7 @@ import { AppModule } from "./app.module";
 
 dotenv.config();
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   const options = new DocumentBuilder()
     .addBearerAuth()
     .setTitle("Universities")
@@ -23,4 +23,5 @@ async function bootstrap() {
   SwaggerModule.setup("universities/api-docs", app, document);
   await app.listen(process.env.APP_PORT || 9000);
 }
+
 bootstrap();

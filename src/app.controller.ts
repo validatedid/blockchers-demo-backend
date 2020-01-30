@@ -9,7 +9,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Post("masters")
-  async postMasters(@Body() body: DIDBody, @Res() rs) {
+  async postMasters(@Body() body: DIDBody, @Res() rs): Promise<void> {
     try {
       return rs.send(await this.appService.createNewMaster(body));
     } catch (ex) {
@@ -24,7 +24,7 @@ export class AppController {
   }
 
   @Post("bachelors")
-  async postBachelors(@Body() body: DIDBody, @Res() rs) {
+  async postBachelors(@Body() body: DIDBody, @Res() rs): Promise<void> {
     try {
       return rs.send(await this.appService.createNewBachelor(body));
     } catch (ex) {
@@ -44,7 +44,7 @@ export class AppController {
     @Headers() headers,
     @Body() serviceEnpointBody: ServiceEndpointBody,
     @Res() rs
-  ) {
+  ): Promise<void> {
     try {
       return rs.send(
         await this.appService.verifyBachelorVP(headers, serviceEnpointBody)
@@ -66,7 +66,7 @@ export class AppController {
     @Headers() headers,
     @Body() serviceEnpointBody: ServiceEndpointBody,
     @Res() rs
-  ) {
+  ): Promise<void> {
     try {
       return rs.send(
         await this.appService.verifyMasterVP(headers, serviceEnpointBody)
@@ -83,7 +83,7 @@ export class AppController {
   }
 
   @Get("/swagger.json")
-  async getSwagger(@Res() response) {
+  async getSwagger(@Res() response): Promise<void> {
     return response.redirect("/universities/api-docs-json");
   }
 }
